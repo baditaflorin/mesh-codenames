@@ -28,6 +28,22 @@ A **rootless-computing** peer-to-peer browser app. No backend of its own beyond 
 
 Read the principles → **https://baditaflorin.github.io/rootless-computing/principles.html**
 
+## How to play
+
+Codenames for the room, with no card table and no shared screen — the board lives on every phone at once. One person opens the link, everyone else scans the room QR (⚙ → invite) or opens the same link.
+
+1. **Pick a team and a role.** Tap **Red** or **Blue**, then **operative** or **spymaster**. Each team wants two roles: one or two spymasters who can see the key, and the rest as operatives who guess.
+2. **Deal a board.** Anyone hits **Deal a board**. All 25 words and their hidden colours are derived from one shared random seed, so every phone shows the identical grid — no card to pass around. The starting team (chosen by the seed) gets **9** agents, the other team **8**, with **7** bystanders and **1** assassin.
+3. **Spymasters see the key.** On a spymaster's phone every tile is tinted with its true colour. On an operative's phone the tiles are blank word cards until tapped. (Sharing the key openly with both spymasters is exactly how the boxed game works — deriving it from a public seed is the same thing.)
+4. **Give clues and guess.** The current team's spymaster gives a one-word clue **out loud** (the app stays out of this, like the real game). Their operatives tap tiles to guess:
+   - Tap one of **your** colours → it flips to that colour for everyone and your team keeps going.
+   - Tap a **bystander** or the **other team's** colour → the turn passes to the other team.
+   - Tap the **assassin** → your team loses instantly.
+   - Done early? Hit **End turn** to pass.
+5. **Win** by being the first team to reveal all of your agents — or by surviving while the other team hits the assassin. The scoreboard reads **Red 9 left · Blue 8 left** and updates live on every phone.
+
+**New game** deals a fresh seed and clears the board for everyone; **Lobby** lets people change teams.
+
 ## Quickstart
 
 Open the live URL on two devices in the same room (set in ⚙ settings, or scan the room QR). Everything else is in-app.

@@ -3,6 +3,11 @@
 
 :root {
   color-scheme: dark;
+  /* Team + tile palette. Tuned for legibility on the dark mesh background. */
+  --cn-red: #e0566c;
+  --cn-blue: #4f8cf0;
+  --cn-neutral: #c8b48a;
+  --cn-assassin: #20202a;
 }
 
 * {
@@ -22,30 +27,373 @@ body,
   -webkit-tap-highlight-color: transparent;
 }
 
-.feature-placeholder {
-  padding: 6rem 1.5rem 2rem;
-  text-align: center;
+.cn-wrap {
+  min-height: 100%;
+  padding: 4.5rem 1rem 6rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1rem;
+  text-align: center;
 }
 
-.feature-placeholder h1 {
-  font-size: 1.6rem;
+.cn-title {
+  font-size: 1.7rem;
   margin: 0;
   color: var(--mesh-accent);
 }
 
-.feature-placeholder p {
-  max-width: 32rem;
+.cn-title.cn-red {
+  color: var(--cn-red);
+}
+
+.cn-title.cn-blue {
+  color: var(--cn-blue);
+}
+
+/* Visually compact heading on the play screen so the grid leads. */
+.cn-sr-title {
+  font-size: 1rem;
+  opacity: 0.55;
+}
+
+.cn-tagline {
+  max-width: 30rem;
   margin: 0;
-  opacity: 0.85;
+  opacity: 0.82;
   line-height: 1.5;
 }
 
-.feature-status {
-  font-size: 0.85rem;
+.cn-status {
   opacity: 0.6;
+}
+
+.cn-hint,
+.cn-role-note {
+  max-width: 30rem;
+  margin: 0;
+  font-size: 0.82rem;
+  opacity: 0.7;
+  line-height: 1.45;
+}
+
+.cn-role-note {
+  color: var(--mesh-accent);
+  opacity: 0.85;
+}
+
+.cn-name {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+  opacity: 0.85;
+}
+
+.cn-name input {
+  font-size: 1.1rem;
+  padding: 0.6rem 0.8rem;
+  border-radius: 0.6rem;
+  border: 1px solid color-mix(in srgb, var(--mesh-accent) 40%, transparent);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--mesh-fg);
+  text-align: center;
+}
+
+/* ---- Lobby: two team columns -------------------------------------------- */
+.cn-teams {
+  display: flex;
+  gap: 0.8rem;
+  width: 100%;
+  max-width: 30rem;
+}
+
+.cn-team-col {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 0.9rem 0.7rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.cn-team-col.cn-red {
+  border-color: color-mix(in srgb, var(--cn-red) 50%, transparent);
+  background: color-mix(in srgb, var(--cn-red) 10%, transparent);
+}
+
+.cn-team-col.cn-blue {
+  border-color: color-mix(in srgb, var(--cn-blue) 50%, transparent);
+  background: color-mix(in srgb, var(--cn-blue) 10%, transparent);
+}
+
+.cn-team-name {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.cn-red .cn-team-name {
+  color: var(--cn-red);
+}
+
+.cn-blue .cn-team-name {
+  color: var(--cn-blue);
+}
+
+.cn-team-roster {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  min-height: 3rem;
+  font-size: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.cn-team-roster .cn-empty {
+  opacity: 0.4;
+  font-style: italic;
+}
+
+.cn-role-btns {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-top: auto;
+}
+
+.cn-seat {
+  padding: 0.55rem 0.5rem;
+  border-radius: 0.6rem;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--mesh-fg);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.cn-seat.is-mine {
+  border-color: var(--mesh-accent);
+  background: color-mix(in srgb, var(--mesh-accent) 30%, transparent);
+}
+
+.cn-seat:active {
+  transform: scale(0.98);
+}
+
+/* ---- Scoreboard + turn banner ------------------------------------------- */
+.cn-score {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.05rem;
+  font-weight: 700;
   font-variant-numeric: tabular-nums;
+}
+
+.cn-score-team {
+  opacity: 0.55;
+  transition: opacity 0.15s ease;
+}
+
+.cn-score-team[data-active="true"] {
+  opacity: 1;
+}
+
+.cn-score-team.cn-red {
+  color: var(--cn-red);
+}
+
+.cn-score-team.cn-blue {
+  color: var(--cn-blue);
+}
+
+.cn-score-dot {
+  opacity: 0.4;
+}
+
+.cn-turn {
+  margin: 0;
+  font-size: 0.95rem;
+  opacity: 0.9;
+}
+
+.cn-turn .cn-red {
+  color: var(--cn-red);
+}
+
+.cn-turn .cn-blue {
+  color: var(--cn-blue);
+}
+
+.cn-verdict {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  max-width: 28rem;
+}
+
+/* ---- 5x5 grid ----------------------------------------------------------- */
+.cn-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.4rem;
+  width: 100%;
+  max-width: 30rem;
+}
+
+.cn-tile {
+  aspect-ratio: 5 / 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.2rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: #f4ecd8;
+  color: #1a1a22;
+  font-size: clamp(0.5rem, 2.6vw, 0.82rem);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  cursor: default;
+  overflow: hidden;
+  transition:
+    transform 0.08s ease,
+    filter 0.15s ease;
+}
+
+.cn-tile-word {
+  display: block;
+  width: 100%;
+  text-align: center;
+  word-break: break-word;
+  line-height: 1.05;
+}
+
+.cn-tile:not(:disabled) {
+  cursor: pointer;
+}
+
+.cn-tile:not(:disabled):active {
+  transform: scale(0.96);
+}
+
+/* Spymaster key view: tint the card edge so the word stays readable. */
+.cn-tile.is-keyed {
+  border-width: 3px;
+}
+
+.cn-tile.is-keyed.cn-c-red {
+  border-color: var(--cn-red);
+  background: color-mix(in srgb, var(--cn-red) 22%, #f4ecd8);
+}
+
+.cn-tile.is-keyed.cn-c-blue {
+  border-color: var(--cn-blue);
+  background: color-mix(in srgb, var(--cn-blue) 22%, #f4ecd8);
+}
+
+.cn-tile.is-keyed.cn-c-neutral {
+  border-color: color-mix(in srgb, var(--cn-neutral) 80%, #000);
+  background: color-mix(in srgb, var(--cn-neutral) 35%, #f4ecd8);
+}
+
+.cn-tile.is-keyed.cn-c-assassin {
+  border-color: #000;
+  background: #3a3a44;
+  color: #f4ecd8;
+}
+
+/* Revealed: solid team colour, dimmed, no longer tappable. */
+.cn-tile.is-revealed {
+  border-width: 1px;
+  filter: saturate(1.1);
+  opacity: 0.92;
+}
+
+.cn-tile.is-revealed.cn-c-red {
+  background: var(--cn-red);
+  border-color: var(--cn-red);
+  color: #2a0810;
+}
+
+.cn-tile.is-revealed.cn-c-blue {
+  background: var(--cn-blue);
+  border-color: var(--cn-blue);
+  color: #04122e;
+}
+
+.cn-tile.is-revealed.cn-c-neutral {
+  background: var(--cn-neutral);
+  border-color: var(--cn-neutral);
+  color: #2a2417;
+}
+
+.cn-tile.is-revealed.cn-c-assassin {
+  background: var(--cn-assassin);
+  border-color: #000;
+  color: #e0566c;
+}
+
+/* ---- Controls ----------------------------------------------------------- */
+.cn-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  max-width: 26rem;
+}
+
+.cn-primary {
+  width: 100%;
+  min-height: 3.1rem;
+  border: none;
+  border-radius: 0.9rem;
+  background: var(--mesh-accent);
+  color: #0c0a10;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.cn-primary:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.cn-primary:not(:disabled):active {
+  transform: scale(0.99);
+}
+
+.cn-secondary {
+  width: 100%;
+  min-height: 2.8rem;
+  border-radius: 0.8rem;
+  border: 2px solid color-mix(in srgb, var(--mesh-accent) 45%, transparent);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--mesh-fg);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.cn-secondary:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.cn-ghost {
+  background: none;
+  border: none;
+  color: var(--mesh-fg);
+  opacity: 0.6;
+  font-size: 0.9rem;
+  cursor: pointer;
+  text-decoration: underline;
 }
