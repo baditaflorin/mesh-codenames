@@ -91,6 +91,17 @@ function useRevealed(room: YRoom | null): {
 
 const TEAM_LABEL: Record<Team, string> = { red: "Red", blue: "Blue" };
 
+/**
+ * Both "Deal a board" (from the lobby) and "Lobby" (from an active game) are
+ * shared, room-wide actions: one tap moves every connected peer's `cn:phase`,
+ * and there is no "resume the old board" affordance once you've left `play`.
+ * Warn before either one discards a game that's still in progress.
+ */
+const DISCARD_WARNING =
+  "A game is in progress. Dealing a new board clears the current one — with all its reveals — for everyone in the room. Continue?";
+const LOBBY_WARNING =
+  'Send everyone in the room back to the lobby? The board in progress isn\'t cleared, but the only way back in is "Deal a board", which deals a brand-new one.';
+
 export function Feature({ room, config }: Props) {
   const { name, setName, names, myName } = useNamedPeer(config, room);
   const roster = useRoster(room);
@@ -103,6 +114,8 @@ export function Feature({ room, config }: Props) {
   const board = buildBoard(game.seed);
   const status: GameStatus = gameStatus(board.key, revealed.flags, game.assassinHitBy);
   const left = remaining(board.key, revealed.flags);
+  // A board has been dealt (seed set) and isn't finished yet.
+  const gameInProgress = game.seed !== 0 && status === "playing";
 
   // When the board reaches a win, advance the shared phase + celebrate once.
   useEffect(() => {
@@ -219,11 +232,19 @@ export function Feature({ room, config }: Props) {
           className="cn-primary"
           disabled={!seated}
           onClick={() => {
+            // A board is already in progress (dealt, not yet won) — dealing
+            // again wipes it (fresh seed, reveals cleared) for every peer in
+            // the room, with no way back to the old board. Confirm first.
+            if (gameInProgress && !window.confirm(DISCARD_WARNING)) return;
             game.newGame();
             phase.transition("play", { from: "lobby" });
           }}
         >
-          {seated ? "Deal a board →" : "Pick a team to start"}
+          {seated
+            ? gameInProgress
+              ? "Deal a NEW board →"
+              : "Deal a board →"
+            : "Pick a team to start"}
         </button>
         <p className="cn-hint">
           Spymasters see the colour key on every tile. Operatives see blank cards until a tile is
@@ -353,12 +374,23 @@ export function Feature({ room, config }: Props) {
           type="button"
           className="cn-ghost"
           onClick={() => {
+            // Same room-wide, one-click discard as the lobby's "Deal a
+            // board" — this one skips the lobby entirely, so it needs its
+            // own guard rather than relying on gameInProgress's caller.
+            if (status === "playing" && !window.confirm(DISCARD_WARNING)) return;
             game.newGame();
           }}
         >
           New game
         </button>
-        <button type="button" className="cn-ghost" onClick={() => phase.transition("lobby")}>
+        <button
+          type="button"
+          className="cn-ghost"
+          onClick={() => {
+            if (status === "playing" && !window.confirm(LOBBY_WARNING)) return;
+            phase.transition("lobby");
+          }}
+        >
           Lobby
         </button>
       </div>
